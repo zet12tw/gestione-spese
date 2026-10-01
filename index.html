@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Spese Personali</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>💰 Gestione Spese</h1>
+            <p>Tieni traccia di entrate e uscite in modo semplice e sicuro in locale.</p>
+        </header>
+
+        <!-- Summary Cards -->
+        <section class="cards-grid">
+            <div class="card card-balance">
+                <h3>Saldo Totale</h3>
+                <p id="total-balance" class="amount">€ 0,00</p>
+            </div>
+            <div class="card card-income">
+                <h3>Entrate Totali</h3>
+                <p id="total-income" class="amount">+ € 0,00</p>
+            </div>
+            <div class="card card-expense">
+                <h3>Uscite Totali</h3>
+                <p id="total-expense" class="amount">- € 0,00</p>
+            </div>
+        </section>
+
+        <!-- Form and Breakdown Layout -->
+        <div class="main-grid">
+            <!-- Form Section -->
+            <section class="form-section card-box">
+                <h2>➕ Aggiungi Transazione</h2>
+                <form id="transaction-form">
+                    <div class="form-group">
+                        <label for="description">Descrizione / Causale</label>
+                        <input type="text" id="description" placeholder="Es. Spesa al supermercato, Stipendio..." required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="amount">Importo (€)</label>
+                            <input type="number" id="amount" step="0.01" min="0.01" placeholder="0.00" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Tipo</label>
+                            <select id="type" required>
+                                <option value="expense">Uscita (Spesa)</option>
+                                <option value="income">Entrata (Guadagno)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category">Categoria</label>
+                            <select id="category" required>
+                                <option value="Alimentari">🛒 Alimentari & Spesa</option>
+                                <option value="Casa">🏠 Casa & Bollette</option>
+                                <option value="Trasporti">🚗 Trasporti & Carburante</option>
+                                <option value="Svago">🍿 Svago & Intrattenimento</option>
+                                <option value="Salute">💊 Salute & Benessere</option>
+                                <option value="Stipendio">💼 Stipendio & Lavoro</option>
+                                <option value="Shopping">🛍️ Shopping</option>
+                                <option value="Altro">📦 Altro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Data</label>
+                            <input type="date" id="date" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Aggiungi Transazione</button>
+                </form>
+            </section>
+
+            <!-- Breakdown / Breakdown Section -->
+            <section class="breakdown-section card-box">
+                <h2>📊 Ripartizione Spese per Categoria</h2>
+                <div id="category-breakdown" class="breakdown-container">
+                    <p class="empty-msg">Nessuna spesa registrata per mostrare il grafico.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- History Section -->
+        <section class="history-section card-box">
+            <div class="history-header">
+                <h2>📋 Storico Transazioni</h2>
+                <div class="filters">
+                    <input type="text" id="search-input" placeholder="Cerca...">
+                    <select id="filter-type">
+                        <option value="all">Tutti i tipi</option>
+                        <option value="expense">Solo Uscite</option>
+                        <option value="income">Solo Entrate</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table id="transactions-table">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Descrizione</th>
+                            <th>Categoria</th>
+                            <th>Tipo</th>
+                            <th>Importo</th>
+                            <th>Azione</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactions-list">
+                        <!-- Transazioni dinamiche -->
+                    </tbody>
+                </table>
+                <div id="no-transactions" class="empty-msg">
+                    Nessuna transazione presente. Compila il modulo sopra per iniziare.
+                </div>
+            </div>
+
+            <!-- Backup & Restore Actions -->
+            <div class="data-actions">
+                <button id="export-btn" class="btn btn-secondary">📥 Esporta Dati (JSON)</button>
+                <label for="import-file" class="btn btn-outline">📤 Importa Dati (JSON)</label>
+                <input type="file" id="import-file" accept=".json" style="display: none;">
+                <button id="clear-btn" class="btn btn-danger">🗑️ Cancella Tutti i Dati</button>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

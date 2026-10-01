@@ -21,7 +21,7 @@ body {
 /* HEADER */
 .app-header {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .app-header h1 {
@@ -35,43 +35,159 @@ body {
     margin-top: 4px;
 }
 
-/* CARDS GRID */
-.cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 15px;
-    margin-bottom: 25px;
+/* SINGLE SALDO CARD */
+.single-card-grid {
+    margin-bottom: 20px;
 }
 
 .card {
     background: #ffffff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    border-left: 5px solid #cbd5e1;
+    padding: 22px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    border-left: 6px solid #2563eb;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.card h3 {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #64748b;
+.card-balance.clickable {
+    cursor: pointer;
+}
+
+.card-balance.clickable:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.15);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 8px;
 }
 
+.card h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+}
+
+.click-badge {
+    font-size: 0.75rem;
+    background-color: #eff6ff;
+    color: #2563eb;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
 .card .amount {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #1e293b;
+}
+
+/* MONTH DETAILS SECTION */
+.hidden {
+    display: none !important;
+}
+
+.month-details-container {
+    background: #ffffff;
+    border: 2px solid #2563eb;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 25px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.month-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 10px;
+}
+
+.month-header h2 {
+    font-size: 1.25rem;
+    color: #1e293b;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.btn-close:hover {
+    color: #ef4444;
+}
+
+/* MINI CARDS FOR MONTH STATS */
+.month-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.mini-card {
+    background: #f8fafc;
+    padding: 14px;
+    border-radius: 10px;
+    border-left: 4px solid #cbd5e1;
+}
+
+.mini-card h4 {
+    font-size: 0.8rem;
+    color: #64748b;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.mini-amount {
+    font-size: 1.3rem;
     font-weight: 700;
 }
 
-.card-balance { border-left-color: #2563eb; }
-.card-balance .amount { color: #1e293b; }
+.mini-card-income { border-left-color: #10b981; }
+.mini-card-income .mini-amount { color: #059669; }
 
-.card-income { border-left-color: #10b981; }
-.card-income .amount { color: #059669; }
+.mini-card-expense { border-left-color: #ef4444; }
+.mini-card-expense .mini-amount { color: #dc2626; }
 
-.card-expense { border-left-color: #ef4444; }
-.card-expense .amount { color: #dc2626; }
+.mini-card-balance { border-left-color: #2563eb; }
+.mini-card-balance .mini-amount { color: #1e293b; }
+
+/* CHART WRAPPER */
+.chart-wrapper {
+    text-align: center;
+    padding-top: 10px;
+}
+
+.chart-wrapper h3 {
+    font-size: 1rem;
+    color: #475569;
+    margin-bottom: 15px;
+}
+
+.canvas-container {
+    max-width: 380px;
+    margin: 0 auto;
+    position: relative;
+    height: 280px;
+}
 
 /* MAIN GRID & BOXES */
 .main-grid {
@@ -344,4 +460,296 @@ tr:last-child td {
     .data-actions .btn {
         width: 100%;
     }
+}
+
+
+/* ===== CALENDARIO ===== */
+.calendar-box { padding: 18px; }
+
+.cal-header {
+    display: grid;
+    grid-template-columns: 48px 1fr 48px;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.cal-nav {
+    width: 48px;
+    height: 48px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    background: #fff;
+    font-size: 1.8rem;
+    line-height: 1;
+    color: #2563eb;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+}
+.cal-nav:hover:not(:disabled) { background: #eff6ff; }
+.cal-nav:disabled { opacity: 0.3; cursor: not-allowed; color: #94a3b8; }
+
+.cal-center { text-align: center; }
+.cal-range { font-size: 0.85rem; color: #64748b; margin-top: 6px; min-height: 1.2em; }
+
+/* Verdetto del saldo del mese, in alto al centro */
+.cal-status {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 8px 22px;
+    border-radius: 14px;
+    border: 2px solid transparent;
+}
+.cal-status-label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+.cal-status-value { font-size: 1.15rem; font-weight: 800; }
+.cal-status.positive { background: #d1fae5; color: #065f46; border-color: #10b981; }
+.cal-status.negative { background: #fee2e2; color: #991b1b; border-color: #ef4444; }
+.cal-status.neutral  { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
+
+.cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 8px;
+}
+.cal-grid.clickable-grid { cursor: pointer; }
+.cal-grid.clickable-grid:hover .cal-day { border-color: #93c5fd; }
+.cal-grid.clickable-grid:focus-visible { outline: 3px solid rgba(37, 99, 235, 0.35); outline-offset: 4px; border-radius: 12px; }
+
+.cal-dow-head {
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+.cal-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 6px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+.cal-day.net-pos { background: #f0fdf4; }
+.cal-day.net-neg { background: #fef2f2; }
+.cal-day.future { opacity: 0.55; border-style: dashed; }
+.cal-day.today { border: 2px solid #2563eb; opacity: 1; }
+.cal-day.empty { background: transparent; border-color: transparent; }
+
+.cal-day-head { display: flex; flex-direction: column; align-items: center; }
+.cal-dow { font-size: 0.72rem; font-weight: 700; color: #64748b; text-transform: uppercase; }
+.cal-date { font-size: 1.25rem; font-weight: 800; color: #1e293b; }
+
+.cal-line { display: flex; flex-direction: column; align-items: center; max-width: 100%; }
+.cal-lbl { font-size: 0.68rem; color: #94a3b8; text-transform: uppercase; }
+.cal-val { font-size: 0.85rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.cal-line.cal-in .cal-val  { color: #059669; }
+.cal-line.cal-out .cal-val { color: #dc2626; }
+.cal-line.zero .cal-val { color: #cbd5e1; font-weight: 500; }
+
+/* Vista mese: celle compatte */
+.cal-day.compact { min-height: 66px; padding: 5px 2px; gap: 1px; }
+.cal-day.compact .cal-date { font-size: 0.9rem; }
+.cal-mini { font-size: 0.7rem; font-weight: 700; white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.cal-mini.cal-in  { color: #059669; }
+.cal-mini.cal-out { color: #dc2626; }
+.cal-mini.zero { color: #cbd5e1; font-weight: 500; }
+
+.cal-summary { margin-top: 16px; margin-bottom: 0; }
+.cal-summary .mini-card-balance.pos { border-left-color: #10b981; }
+.cal-summary .mini-card-balance.pos .mini-amount { color: #059669; }
+.cal-summary .mini-card-balance.neg { border-left-color: #ef4444; }
+.cal-summary .mini-card-balance.neg .mini-amount { color: #dc2626; }
+
+.cal-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+}
+.cal-toggle { padding: 8px 14px; font-size: 0.85rem; margin-left: auto; }
+
+@media (max-width: 600px) {
+    .calendar-box { padding: 12px 8px; }
+    .cal-header { grid-template-columns: 40px 1fr 40px; gap: 6px; }
+    .cal-nav { width: 40px; height: 40px; }
+    .cal-status { padding: 6px 12px; }
+    .cal-status-value { font-size: 1rem; }
+    .cal-grid { gap: 4px; }
+    /* Settimana: un giorno per riga, così gli importi si leggono bene */
+    .cal-grid.week-grid { grid-template-columns: 1fr; gap: 6px; }
+    .cal-day.week { flex-direction: row; justify-content: space-between; align-items: center; padding: 10px 14px; }
+    .cal-day.week .cal-day-head { flex-direction: row; gap: 10px; align-items: baseline; min-width: 80px; }
+    .cal-day.week .cal-line { align-items: flex-end; }
+    .cal-mini { font-size: 0.6rem; }
+    .cal-day.compact { min-height: 56px; }
+}
+
+
+/* =====================================================
+   TEMA GRAFICO
+   ===================================================== */
+:root {
+    --primary: #4f46e5;
+    --accent: #2563eb;
+    --ink: #0f172a;
+    --muted: #64748b;
+    --line: #e5e9f2;
+    --radius: 20px;
+    --shadow: 0 12px 32px -14px rgba(30, 41, 59, 0.22), 0 2px 6px rgba(30, 41, 59, 0.05);
+}
+
+* { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+body {
+    background:
+        radial-gradient(900px 480px at 8% -8%, #e0e7ff 0%, transparent 60%),
+        radial-gradient(800px 480px at 100% 0%, #fae8ff 0%, transparent 55%),
+        #f8fafc;
+    background-attachment: fixed;
+    color: var(--ink);
+    padding: 32px 16px 56px;
+}
+
+.app-container > * { animation: fadeIn 0.45s ease both; }
+
+/* Header */
+.app-header { margin-bottom: 28px; }
+.app-header h1 { font-size: 2.3rem; font-weight: 800; letter-spacing: -0.6px; }
+.app-header h1 .grad {
+    background: linear-gradient(90deg, #4f46e5, #2563eb 50%, #7c3aed);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.app-header p { color: var(--muted); font-size: 1rem; margin-top: 6px; }
+
+/* Saldo totale: centrato */
+.single-card-grid { margin-bottom: 24px; }
+.card { border-left: none; border-radius: var(--radius); box-shadow: var(--shadow); }
+.card-balance {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 32px 22px 34px;
+    color: #fff;
+    background: linear-gradient(135deg, #4f46e5 0%, #2563eb 55%, #0ea5e9 100%);
+    box-shadow: 0 22px 40px -18px rgba(79, 70, 229, 0.55);
+}
+.card-balance::before, .card-balance::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    pointer-events: none;
+}
+.card-balance::before { width: 260px; height: 260px; right: -80px; top: -130px; }
+.card-balance::after  { width: 200px; height: 200px; left: -70px; bottom: -120px; }
+.card-balance .card-header { justify-content: center; margin-bottom: 4px; position: relative; z-index: 1; }
+.card-balance h3 { color: rgba(255, 255, 255, 0.82); font-size: 0.85rem; letter-spacing: 2px; }
+.card-balance .amount { position: relative; z-index: 1; color: #fff; text-align: center; font-size: 3.2rem; font-weight: 800; letter-spacing: -1px; }
+.card-balance.clickable:hover { transform: translateY(-3px); box-shadow: 0 26px 46px -18px rgba(79, 70, 229, 0.65); }
+
+/* Box / sezioni */
+.card-box {
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    padding: 26px;
+}
+.card-box h2 { font-size: 1.15rem; font-weight: 700; border-bottom: none; padding-bottom: 0; margin-bottom: 20px; }
+
+.month-details-container { border: 1px solid #c7d2fe; background: linear-gradient(180deg, #ffffff, #f8faff); }
+.mini-card { background: #fff; border-radius: 14px; box-shadow: 0 4px 12px -6px rgba(30, 41, 59, 0.18); border-left-width: 5px; }
+.mini-amount { font-weight: 800; }
+
+/* Form */
+label { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+input, select {
+    border: 1.5px solid #dbe2ee;
+    border-radius: 12px;
+    padding: 11px 14px;
+    background: #fbfcfe;
+}
+input:focus, select:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.13); }
+
+.btn { border-radius: 12px; padding: 12px 20px; }
+.btn:active { transform: scale(0.98); }
+.btn-primary {
+    background: linear-gradient(135deg, #4f46e5, #2563eb);
+    box-shadow: 0 10px 20px -10px rgba(79, 70, 229, 0.8);
+}
+.btn-primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.btn-outline { background: #fff; }
+.btn-danger { background: #fff; border: 1.5px solid #fecaca; color: #dc2626; }
+.btn-danger:hover { background: #fee2e2; }
+
+/* Ripartizione */
+.progress-bar-bg { height: 12px; border-radius: 6px; background: #eef2f7; }
+.progress-bar-fill { background: linear-gradient(90deg, #6366f1, #3b82f6); }
+.category-info { font-size: 0.88rem; }
+
+/* Storico */
+th {
+    background: #f1f5f9;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.6px;
+    border-bottom: none;
+}
+th:first-child { border-radius: 10px 0 0 10px; }
+th:last-child  { border-radius: 0 10px 10px 0; }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: #f8faff; }
+.tag-badge { padding: 4px 11px; }
+
+/* Svuota dati */
+.data-actions { justify-content: center; border-top: 1px dashed #e2e8f0; }
+
+/* Calendario */
+.calendar-box { padding: 24px; }
+.cal-nav {
+    border-radius: 50%;
+    border: none;
+    background: #fff;
+    box-shadow: 0 4px 12px -4px rgba(30, 41, 59, 0.25);
+}
+.cal-nav:hover:not(:disabled) { background: #eef2ff; transform: scale(1.06); }
+.cal-nav:disabled { box-shadow: none; background: #f1f5f9; }
+.cal-status { border-radius: 16px; padding: 10px 28px; box-shadow: 0 8px 18px -10px rgba(30, 41, 59, 0.35); }
+.cal-status-value { font-size: 1.25rem; }
+.cal-range { font-weight: 500; }
+
+.cal-day {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 2px 6px -3px rgba(15, 23, 42, 0.12);
+    transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+}
+.cal-grid.clickable-grid .cal-day:hover { transform: translateY(-3px); box-shadow: 0 12px 20px -12px rgba(37, 99, 235, 0.45); }
+.cal-day.net-pos { background: #f0fdf4; border-color: #bbf7d0; }
+.cal-day.net-neg { background: #fef2f2; border-color: #fecaca; }
+.cal-day.today { background: linear-gradient(180deg, #eef2ff, #ffffff); border: 2px solid var(--primary); }
+.cal-day.today .cal-date { color: var(--primary); }
+.cal-day.empty { background: transparent; border-color: transparent; box-shadow: none; }
+.cal-date { font-weight: 800; }
+.cal-footer { justify-content: center; }
+.cal-toggle { margin: 0 auto; border-radius: 999px; padding: 9px 20px; box-shadow: 0 4px 10px -6px rgba(30, 41, 59, 0.3); }
+
+@media (max-width: 600px) {
+    body { padding: 20px 10px 40px; }
+    .app-header h1 { font-size: 1.8rem; }
+    .card-balance .amount { font-size: 2.5rem; }
+    .card-box { padding: 20px 16px; }
+    .calendar-box { padding: 16px 10px; }
 }

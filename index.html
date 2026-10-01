@@ -4,29 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione Spese Personali</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="style.css">
+    <!-- Chart.js per il grafico del mese -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="app-container">
         <!-- Header -->
         <header class="app-header">
-            <h1>💰 Gestione Spese</h1>
-            <p>Tieni traccia di entrate e uscite in modo semplice e sicuro in locale.</p>
+            <h1><span class="logo">💰</span> <span class="grad">Gestione Spese</span></h1>
+            <p>Tieni traccia di entrate e uscite in locale.</p>
         </header>
 
-        <!-- Summary Cards -->
-        <section class="cards-grid">
-            <div class="card card-balance">
-                <h3>Saldo Totale</h3>
+        <!-- Main Balance Card Only -->
+        <section class="single-card-grid">
+            <div class="card card-balance" id="balance-card">
+                <div class="card-header">
+                    <h3>Saldo Totale</h3>
+                </div>
                 <p id="total-balance" class="amount">€ 0,00</p>
             </div>
-            <div class="card card-income">
-                <h3>Entrate Totali</h3>
-                <p id="total-income" class="amount">+ € 0,00</p>
+        </section>
+
+        <!-- Calendario settimanale / mensile -->
+        <section id="calendar-section" class="card-box calendar-box">
+            <div class="cal-header">
+                <button id="cal-prev" class="cal-nav" type="button" title="Vai indietro" aria-label="Vai indietro">‹</button>
+                <div class="cal-center">
+                    <div id="cal-status" class="cal-status neutral"></div>
+                    <div id="cal-range" class="cal-range"></div>
+                </div>
+                <button id="cal-next" class="cal-nav" type="button" title="Vai avanti" aria-label="Vai avanti">›</button>
             </div>
-            <div class="card card-expense">
-                <h3>Uscite Totali</h3>
-                <p id="total-expense" class="amount">- € 0,00</p>
+
+            <div id="cal-grid" class="cal-grid"></div>
+
+            <div id="cal-summary" class="month-cards-grid cal-summary hidden"></div>
+
+            <div id="cal-chart" class="chart-wrapper cal-chart hidden">
+                <h3 id="cal-chart-title">📊 Grafico spese del mese</h3>
+                <div class="canvas-container">
+                    <canvas id="monthChart"></canvas>
+                </div>
+                <div id="no-chart-msg" class="empty-msg hidden">
+                    Nessuna spesa registrata in questo mese per mostrare il grafico.
+                </div>
+            </div>
+
+            <div class="cal-footer">
+                <button id="cal-toggle" class="btn btn-outline cal-toggle" type="button">📅 Vedi mese</button>
             </div>
         </section>
 
@@ -38,7 +67,7 @@
                 <form id="transaction-form">
                     <div class="form-group">
                         <label for="description">Descrizione / Causale</label>
-                        <input type="text" id="description" placeholder="Es. Spesa al supermercato, Stipendio..." required>
+                        <input type="text" id="description" placeholder="Es. Maglietta, Ricarica puff, Stipendio..." required>
                     </div>
 
                     <div class="form-row">
@@ -59,13 +88,11 @@
                         <div class="form-group">
                             <label for="category">Categoria</label>
                             <select id="category" required>
-                                <option value="Alimentari">🛒 Alimentari & Spesa</option>
-                                <option value="Casa">🏠 Casa & Bollette</option>
-                                <option value="Trasporti">🚗 Trasporti & Carburante</option>
-                                <option value="Svago">🍿 Svago & Intrattenimento</option>
-                                <option value="Salute">💊 Salute & Benessere</option>
-                                <option value="Stipendio">💼 Stipendio & Lavoro</option>
-                                <option value="Shopping">🛍️ Shopping</option>
+                                <option value="Ordini Vestiti">👕 Ordini Vestiti</option>
+                                <option value="Ordini Puff">💨 Ordini Puff</option>
+                                <option value="Svago">🍿 Svago</option>
+                                <option value="Investimenti">📈 Investimenti</option>
+                                <option value="Stipendio">💼 Stipendio / Entrate</option>
                                 <option value="Altro">📦 Altro</option>
                             </select>
                         </div>
@@ -79,11 +106,11 @@
                 </form>
             </section>
 
-            <!-- Breakdown / Breakdown Section -->
+            <!-- Breakdown Section -->
             <section class="breakdown-section card-box">
-                <h2>📊 Ripartizione Spese per Categoria</h2>
+                <h2>📊 Ripartizione Spese Totali</h2>
                 <div id="category-breakdown" class="breakdown-container">
-                    <p class="empty-msg">Nessuna spesa registrata per mostrare il grafico.</p>
+                    <p class="empty-msg">Nessuna spesa registrata per mostrare la ripartizione.</p>
                 </div>
             </section>
         </div>
@@ -123,12 +150,9 @@
                 </div>
             </div>
 
-            <!-- Backup & Restore Actions -->
+            <!-- Svuota dati -->
             <div class="data-actions">
-                <button id="export-btn" class="btn btn-secondary">📥 Esporta Dati (JSON)</button>
-                <label for="import-file" class="btn btn-outline">📤 Importa Dati (JSON)</label>
-                <input type="file" id="import-file" accept=".json" style="display: none;">
-                <button id="clear-btn" class="btn btn-danger">🗑️ Cancella Tutti i Dati</button>
+                <button id="clear-btn" class="btn btn-danger">🗑️ Svuota Tutti i Dati</button>
             </div>
         </section>
     </div>
